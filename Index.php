@@ -73,21 +73,27 @@ require 'Integration.php';
        </form>
 <?php
 if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+
+  for($i = 0; $i < $count; $i++) {
+
 ?>
 
     <ul class="result-list">
       <li>
-        <img src="<?php echo $BookCover; ?>" alt="<?php echo $bookTitle; ?>" class="book-cover">
+        <img src="<?php echo $BookCover[$i]; ?>" alt="<?php echo $bookTitle[$i]; ?>" class="book-cover">
         <div class="book-info">
-          <h2 class="book-title"><?php echo $bookTitle; ?></h2>
-          <p class="book-author"><?php echo $bookAuthor; ?></p>
-          <p class="book-publication-date"><?php echo $publishYear; ?></p>
-          <p class="pages-count"><?php echo $pagesCount; ?></p>        
+          <h2 class="book-title"><?php echo $bookTitle[$i]; ?></h2>
+          <p class="book-author">
+            <?php foreach ($bookAuthor[$i] as $name) {
+                      echo $name . '<br>';  
+                  } ?></p>
+          <p class="book-publication-date"><?php echo $publishYear[$i]; ?></p>
+          <p class="pages-count"><?php echo $pagesCount[$i]; ?></p>        
         </div>
       </li>
     </ul>
 <?php
-    
+      }
     } 
   ?>
   </div>
