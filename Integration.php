@@ -7,57 +7,28 @@ use GuzzleHttp\client;
 $client = new Client();
 
 if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
-$URL = 'https://openlibrary.org/search.json?q=' . $_POST['name'];
 
+	$URL = 'https://openlibrary.org/search.json?q=' . $_POST['name'];
+	$res = $client->get($URL);
+	$data = json_decode($res->getBody()->getContents());
 
-$res = $client->get($URL);
+	$responseData = $data->docs;
+	$booksData = [];
+	foreach($responseData as $index => $book) {
+			if (isset($book->title) && isset($book->author_name) && isset($book->first_publish_year) && isset($book->number_of_pages_median)) {
+				$booksData[$index]['title'] = $book->title;
+				$booksData[$index]['author_name'] = $book->author_name;
+				$booksData[$index]['number_of_pages_median'] = $book->number_of_pages_median;
+				$booksData[$index]['first_publish_year'] = $book->first_publish_year;
 
-$data = json_decode($res->getBody()->getContents());
+				if (isset($book->cover_i)){
+						$booksData[$index]['cover_i'] = 'https://covers.openlibrary.org/b/id/' . $book->cover_i . '-L.jpg';}
+				else{$booksData[$index]['cover_i'] = "";}	
+		}
 
-//$bookTitle = $_POST['name'];
-
-
-//var_dump($data);
-//var_dump($data->docs[0]->author_name[0]);
-
-
-
-$bookTitle = array_column($data->docs, 'title');
-$count = count($bookTitle);
-//print_r($bookTitle);
-
-
-$bookAuthor = array_column($data->docs, 'author_name');
-//print_r($bookAuthor);
-
-//$bookAuthor = $data->docs[0]->author_name;
-
-$cover = array_column($data->docs, 'cover_i');
-$coverNum = count($cover);
-//print_r($cover);
-
-  for($i = 0; $i < $coverNum; $i++) {
-
-//foreach ($cover as $value) {
-	$BookCover[$i] = 'https://covers.openlibrary.org/b/id/' . $cover[$i] . '-L.jpg';
-}
-
-
-//$BookCover = 'https://covers.openlibrary.org/b/id/' . $data->docs[0]->cover_i . '-L.jpg';
-
-$publishYear = array_column($data->docs, 'first_publish_year');
-//print_r($publishYear);
-
-//$publishYear = $data->docs[0]->first_publish_year;
-
-
-$pagesCount = array_column($data->docs, 'number_of_pages_median');
-//print_r($pagesCount);
-
-//$pagesCount = $data->docs[0]->number_of_pages_median;
-
-//}
+	}
 
 
 }
+
 

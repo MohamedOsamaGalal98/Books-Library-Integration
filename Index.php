@@ -72,23 +72,18 @@ require 'Integration.php';
       <input type="submit" value="Search">
        </form>
 <?php
-if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
-
-  for($i = 0; $i < $count; $i++) {
-
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    foreach($booksData as $book) {
 ?>
-
     <ul class="result-list">
       <li>
-        <img src="<?php echo $BookCover[$i]; ?>" alt="<?php echo $bookTitle[$i]; ?>" class="book-cover">
+         <img src="<?php echo $book['cover_i']; ?>" alt="<?php echo $book['title']; ?>" class="book-cover">
         <div class="book-info">
-          <h2 class="book-title"><?php echo $bookTitle[$i]; ?></h2>
-          <p class="book-author">
-            <?php foreach ($bookAuthor[$i] as $name) {
-                      echo $name . '<br>';  
-                  } ?></p>
-          <p class="book-publication-date"><?php echo $publishYear[$i]; ?></p>
-          <p class="pages-count"><?php echo $pagesCount[$i]; ?></p>        
+          <h2 class="book-title"><?php echo $book['title']; ?></h2>
+          <p class="book-author"><?php foreach ($book['author_name'] as $name) {
+          echo $name . '<br>'; } ?></p>
+          <p class="book-publication-date"><?php echo $book['first_publish_year']; ?></p>
+          <p class="pages-count"><?php echo $book['number_of_pages_median']; ?></p>   
         </div>
       </li>
     </ul>
